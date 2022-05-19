@@ -1,19 +1,26 @@
 require("dotenv").config();
 const express = require("express");
-const app = express();
+const app = express();const axios = require("axios");
 const cors = require("cors");
-const axios = require("axios");
+var bodyParser = require('body-parser')
+
 const optionCors = {
   origin: "http://localhost:3000",
   credentials: true,
 };
+// support parsing of application/json type post data
+app.use(bodyParser.json());
 
+//support parsing of application/x-www-form-urlencoded post data
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors(optionCors));
+app.use(express.urlencoded({extended: true}));
 
 const port = 8090;
-app.get("/", (req, res) => {
-  const filterBy = req.query.typeFilter;
-  const value = req.query.value;
+
+app.post("/", (req, res) => {
+  const filterBy = req.body.typeFilter;
+  const value = req.body.value;
   let paramsApi = new Object();
   paramsApi[filterBy] = value;
 
